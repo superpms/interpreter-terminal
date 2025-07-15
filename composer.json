@@ -1,0 +1,41 @@
+{
+    "name": "superpms/interpreter-terminal",
+    "license": "Apache-2.0",
+    "version": "1.0.0",
+    "description": "pms terminal interpreter",
+    "autoload": {
+        "files": [
+            "stubs/autorun.php",
+            "stubs/const.php",
+            "stubs/ide-helper.php"
+        ],
+        "psr-4": {
+            "pms\\": "src/pms/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Guest",
+            "email": "kid666@88.com"
+        }
+    ],
+
+
+
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "E:\\development\\super\\composer\\pms\\framework"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "superpms/framework": "^2.0"
+    },
+    "require-dev": {
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
