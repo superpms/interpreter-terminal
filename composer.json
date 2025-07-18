@@ -1,13 +1,10 @@
 {
     "name": "superpms/interpreter-terminal",
     "license": "Apache-2.0",
-    "version": "1.0.0",
     "description": "pms terminal interpreter",
     "autoload": {
         "files": [
-            "stubs/autorun.php",
-            "stubs/const.php",
-            "stubs/ide-helper.php"
+            "bin/autoload.php"
         ],
         "psr-4": {
             "pms\\": "src/pms/"
@@ -21,9 +18,7 @@
     ],
     "require": {
         "php": ">=8.1",
-        "superpms/framework": "^2.0"
-    },
-    "require-dev": {
+        "superpms/framework": "^v2.0.0"
     },
     "config": {
         "sort-packages": true
