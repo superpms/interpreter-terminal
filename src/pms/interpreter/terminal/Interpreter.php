@@ -9,7 +9,7 @@ class Interpreter extends InterpreterApp
     protected static string $name = 'Terminal Interpreter';
 
 
-    public static function run(): mixed{
+    public static function run(\pms\program\boot\Options $bootOptions): mixed{
         return TerminalCommandHook::run();
     }
 
