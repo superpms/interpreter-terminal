@@ -2,13 +2,14 @@
 
 namespace pms\interpreter\terminal;
 
+use pms\app\TerminalCommandApp;
 use pms\Container;
 use pms\exception\CliModeForcedInterruptException;
 use pms\inject\TerminalInputInject;
 use pms\inject\TerminalOutputInject;
-use pms\contract\AppInterface;
 use pms\interpreter\terminal\sandbox\CommandInput;
 use pms\interpreter\terminal\sandbox\CommandOutput;
+use pms\program\boot\Options;
 
 class Sandbox extends Container
 {
@@ -16,7 +17,8 @@ class Sandbox extends Container
     public function __construct(
         protected array $command,
         protected string $name ,
-        protected array $argv
+        protected array $argv,
+        protected Options $bootOptions,
     ){
 
     }
@@ -29,11 +31,12 @@ class Sandbox extends Container
         $this->put(TerminalInputInject::class, (new CommandInput($validate)));
         $this->put(TerminalOutputInject::class, CommandOutput::class);
         /**
-         * @var $obj AppInterface
+         * @var $obj TerminalCommandApp
          */
         $obj = $this->invokeClass($namespace, [
             $this->command,
-            $this->argv
+            $this->argv,
+            $this->bootOptions
         ]);
         try{
             $obj->entry();

@@ -10,7 +10,7 @@ class Interpreter extends InterpreterApp
 
 
     public static function run(\pms\program\boot\Options $bootOptions): mixed{
-        return TerminalCommandHook::run();
+        return TerminalCommandHook::run($bootOptions);
     }
 
 }

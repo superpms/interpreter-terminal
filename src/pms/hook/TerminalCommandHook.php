@@ -24,7 +24,7 @@ class TerminalCommandHook implements HookInterface
         return isset(static::$container[$commandName]);
     }
 
-    public static function run(): mixed
+    public static function run(\pms\program\boot\Options $bootOptions): mixed
     {
         $argv = $_SERVER['argv'];
         array_shift($argv);
@@ -40,7 +40,7 @@ class TerminalCommandHook implements HookInterface
             $interpreterName = static::$name;
             exit("{$interpreterName}: 命令 [{$name}] 不存在");
         }
-        return (new Sandbox(static::$container, $name, $argv))->run();
+        return (new Sandbox(static::$container, $name, $argv,$bootOptions))->run();
     }
 
 }

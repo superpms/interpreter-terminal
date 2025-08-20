@@ -3,6 +3,7 @@
 namespace pms\app;
 
 use pms\contract\AppInterface;
+use pms\program\boot\Options;
 
 abstract class TerminalCommandApp implements AppInterface
 {
@@ -23,7 +24,7 @@ abstract class TerminalCommandApp implements AppInterface
      */
     protected array $validate = [];
 
-    final public function __construct(protected array $commands,protected array $argv){}
+    final public function __construct(protected array $commands,protected array $argv,protected Options $bootOptions){}
 
 
 }
