@@ -1,6 +1,6 @@
-pms framework terminal interpreter
+superpms framework terminal interpreter
 ===============
-pms 应用框架 terminal 应用解释器
+superpms 应用框架 terminal 应用解释器
 
 # 特性
 * 基于PHP `8.1+`开发
