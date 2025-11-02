@@ -2,6 +2,8 @@
     "name": "superpms/interpreter-terminal",
     "license": "Apache-2.0",
     "description": "pms terminal interpreter",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "files": [
             "bin/autoload.php"

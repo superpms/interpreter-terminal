@@ -5,6 +5,7 @@ namespace pms\interpreter\terminal;
 use pms\app\TerminalCommandApp;
 use pms\Container;
 use pms\exception\CliModeForcedInterruptException;
+use pms\hook\TerminalLifecycleHook;
 use pms\inject\TerminalInputInject;
 use pms\inject\TerminalOutputInject;
 use pms\interpreter\terminal\sandbox\CommandInput;
@@ -15,7 +16,7 @@ class Sandbox extends Container
 {
 
     public function __construct(
-        protected array $command,
+        protected array $commandList,
         protected string $name ,
         protected array $argv,
         protected Options $bootOptions,
@@ -25,16 +26,25 @@ class Sandbox extends Container
 
     public function run()
     {
-        $namespace = $this->command[$this->name];
+        $namespace = $this->commandList[$this->name];
+        if (!class_exists($namespace)) {
+            exit(CommandOutput::setColorStr(TERMINAL_COLOR_RED,"Command with class not found: " . $this->name));
+        }
         $class = $this->getClass($namespace);
         $validate = $class->getProperty('validate')->getDefaultValue();
         $this->put(TerminalInputInject::class, (new CommandInput($validate)));
         $this->put(TerminalOutputInject::class, CommandOutput::class);
+        TerminalLifecycleHook::run(LIFECYCLE_BOOT,
+            $this->name,
+            $this->argv,
+            $this->bootOptions,
+            $this->commandList
+        );
         /**
          * @var $obj TerminalCommandApp
          */
-        $obj = $this->invokeClass($namespace, [
-            $this->command,
+        $obj = $this->invokeClass($class, [
+            $this->commandList,
             $this->argv,
             $this->bootOptions
         ]);

@@ -7,8 +7,10 @@ use pms\interpreter\terminal\Sandbox;
 
 class TerminalCommandHook implements HookInterface
 {
-    public static array $container = [];
+
     protected static string $name = 'Terminal Interpreter';
+
+    protected static array $container = [];
 
     public static function mount(string $commandName, string $commandClass): bool
     {
@@ -43,4 +45,8 @@ class TerminalCommandHook implements HookInterface
         return (new Sandbox(static::$container, $name, $argv,$bootOptions))->run();
     }
 
+    public static function audit()
+    {
+        return static::$container;
+    }
 }

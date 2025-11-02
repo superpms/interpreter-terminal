@@ -2,7 +2,10 @@
 
 namespace pms\app;
 
+use pms\annotate\Inject;
 use pms\contract\AppInterface;
+use pms\inject\TerminalInputInject;
+use pms\inject\TerminalOutputInject;
 use pms\program\boot\Options;
 
 abstract class TerminalCommandApp implements AppInterface
@@ -24,7 +27,22 @@ abstract class TerminalCommandApp implements AppInterface
      */
     protected array $validate = [];
 
-    final public function __construct(protected array $commands,protected array $argv,protected Options $bootOptions){}
+    /**
+     * 命令是否安装
+     * @param string $commandName 命令名称
+     * @return bool
+     */
+    private function isInstall(string $commandName): bool
+    {
+        return array_key_exists($commandName,$this->commandList);
+    }
+
+    final public function __construct(protected array $commandList,protected array $argv,protected Options $bootOptions){}
 
 
+    #[Inject(TerminalInputInject::class)]
+    protected TerminalInputInject $input;
+
+    #[Inject(TerminalOutputInject::class)]
+    protected TerminalOutputInject $output;
 }

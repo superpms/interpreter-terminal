@@ -1,7 +1,6 @@
 <?php
 const COMMAND_OPTION_TYPE = 'option';
 const COMMAND_ARGUMENT_TYPE = 'argument';
-
 const TERMINAL_COLOR_RED = 31;
 const TERMINAL_COLOR_GREEN = 32;
 const TERMINAL_COLOR_YELLOW = 33;
