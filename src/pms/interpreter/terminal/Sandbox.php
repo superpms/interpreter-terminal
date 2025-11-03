@@ -37,6 +37,7 @@ class Sandbox extends Container
         TerminalLifecycleHook::run(LIFECYCLE_BOOT,
             $this->name,
             $this->argv,
+            $class,
             $this->bootOptions,
             $this->commandList
         );

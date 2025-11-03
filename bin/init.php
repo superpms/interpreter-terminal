@@ -6,4 +6,3 @@ InterpreterHook::mount(
     'terminal',
     interpreter\terminal\Interpreter::class
 );
-
