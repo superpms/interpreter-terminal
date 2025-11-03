@@ -26,17 +26,28 @@ class Sandbox extends Container
 
     public function run(string $namespace)
     {
-
-        $class = $this->getClass($namespace);
-        $validate = $class->getProperty('validate')->getDefaultValue();
-        $this->put(TerminalInputInject::class, (new CommandInput($validate)));
-        $this->put(TerminalOutputInject::class, CommandOutput::class);
-        TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_BOOTED,
+        TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_CREATED,
             $this->name,
             $this->argv,
             $this->bootOptions,
             $this->commandList
         );
+
+        $class = $this->getClass($namespace);
+
+
+        $validate = $class->getProperty('validate')->getDefaultValue();
+        $this->put(TerminalInputInject::class, (new CommandInput($validate)));
+        $this->put(TerminalOutputInject::class, CommandOutput::class);
+        TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_BOOT,
+            $this->name,
+            $this->argv,
+            $this->bootOptions,
+            $this->commandList,
+            $class
+        );
+
+
         /**
          * @var $obj TerminalCommandApp
          */
@@ -45,13 +56,13 @@ class Sandbox extends Container
             $this->argv,
             $this->bootOptions
         ]);
-        TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_RAN,
+        TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_BOOTED,
             $this->name,
             $this->argv,
-            $obj,
-            $class,
             $this->bootOptions,
-            $this->commandList
+            $this->commandList,
+            $class,
+            $obj
         );
         try{
             $obj->entry();
@@ -62,6 +73,14 @@ class Sandbox extends Container
                 exit(CommandOutput::setColorStr(TERMINAL_COLOR_RED, "dd(...) Forced Interrupt!"));
             }
         }
+        TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_RAN,
+            $this->name,
+            $this->argv,
+            $this->bootOptions,
+            $this->commandList,
+            $class,
+            $obj
+        );
     }
 
     public function __destruct()

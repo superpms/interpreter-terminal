@@ -29,12 +29,12 @@ class TerminalCommandHook implements HookInterface
 
     public static function run(\pms\program\boot\Options $bootOptions): mixed
     {
+        TerminalLifecycleHook::run(LIFECYCLE_BOOT);
         $argv = $_SERVER['argv'];
         array_shift($argv);
         if (empty($argv)) {
             exit("未输入要执行的命令");
         }
-        TerminalLifecycleHook::run(LIFECYCLE_BOOT,$argv);
         static::$container = [
             ...static::$container,
             ...config('command', []),
@@ -48,7 +48,7 @@ class TerminalCommandHook implements HookInterface
         if (!class_exists($namespace)) {
             exit(CommandOutput::setColorStr(TERMINAL_COLOR_RED,"Command with class not found: " . $name));
         }
-        TerminalLifecycleHook::run(LIFECYCLE_BOOT,$name,$argv,$namespace);
+        TerminalLifecycleHook::run(LIFECYCLE_BOOTED,$name,$argv,$namespace);
         return (new Sandbox(static::$container, $name, $argv,$bootOptions))->run($namespace);
     }
 
