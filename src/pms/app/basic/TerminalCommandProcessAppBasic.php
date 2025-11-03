@@ -39,9 +39,9 @@ abstract class TerminalCommandProcessAppBasic extends TerminalCommandApp
         $this->terminalProcess->setKeepAliveInterval($this->keepAliveInterval);
     }
 
-    protected function heartbeat(): void
+    protected function heartbeat(int $threshold=3): void
     {
-        $this->terminalProcess->heartbeat();
+        $this->terminalProcess->heartbeat($threshold);
     }
 
 
