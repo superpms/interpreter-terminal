@@ -64,15 +64,7 @@ class Sandbox extends Container
             $class,
             $obj
         );
-        try{
-            $obj->entry();
-        }catch (\Throwable $e){
-            if(!($e instanceof CliModeForcedInterruptException)){
-                throw $e;
-            }else{
-                exit(CommandOutput::setColorStr(TERMINAL_COLOR_RED, "dd(...) Forced Interrupt!"));
-            }
-        }
+        $obj->entry();
         TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_RAN,
             $this->name,
             $this->argv,

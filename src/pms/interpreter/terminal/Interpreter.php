@@ -2,7 +2,9 @@
 
 namespace pms\interpreter\terminal;
 use pms\app\InterpreterApp;
+use pms\exception\CliModeForcedInterruptException;
 use pms\hook\TerminalCommandHook;
+use pms\interpreter\terminal\sandbox\CommandOutput;
 
 class Interpreter extends InterpreterApp
 {
@@ -10,7 +12,15 @@ class Interpreter extends InterpreterApp
 
 
     public static function run(\pms\program\boot\Options $bootOptions): mixed{
-        return TerminalCommandHook::run($bootOptions);
+        try{
+            return TerminalCommandHook::run($bootOptions);
+        }catch (\Throwable $throwable){
+            if(!($throwable instanceof CliModeForcedInterruptException)){
+                throw $throwable;
+            }else{
+                exit(CommandOutput::setColorStr(TERMINAL_COLOR_RED, "dd(...) Forced Interrupt!"));
+            }
+        }
     }
 
 }
