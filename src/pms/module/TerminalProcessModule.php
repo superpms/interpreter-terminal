@@ -54,10 +54,10 @@ abstract class TerminalProcessModule extends CfgOptions
         return $this->processDriver::active($this->address, json_encode($this->toArray(), 320),$this->keep_alive_interval);
     }
 
-    public function heartbeat(): bool
+    public function heartbeat(int $threshold=3): bool
     {
         $currentTime = time();
-        $nextTime = $this->active_time + $this->keep_alive_interval - 3;
+        $nextTime = $this->active_time + $this->keep_alive_interval - $threshold;
         if ($nextTime > $currentTime) {
             return true;
         }
