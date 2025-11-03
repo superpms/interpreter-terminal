@@ -4,6 +4,7 @@ namespace pms\hook;
 
 use pms\contract\HookInterface;
 use pms\interpreter\terminal\Sandbox;
+use pms\interpreter\terminal\sandbox\CommandOutput;
 
 class TerminalCommandHook implements HookInterface
 {
@@ -33,6 +34,7 @@ class TerminalCommandHook implements HookInterface
         if (empty($argv)) {
             exit("未输入要执行的命令");
         }
+        TerminalLifecycleHook::run(LIFECYCLE_BOOT,$argv);
         static::$container = [
             ...static::$container,
             ...config('command', []),
@@ -42,7 +44,12 @@ class TerminalCommandHook implements HookInterface
             $interpreterName = static::$name;
             exit("{$interpreterName}: 命令 [{$name}] 不存在");
         }
-        return (new Sandbox(static::$container, $name, $argv,$bootOptions))->run();
+        $namespace = static::$container[$name];
+        if (!class_exists($namespace)) {
+            exit(CommandOutput::setColorStr(TERMINAL_COLOR_RED,"Command with class not found: " . $name));
+        }
+        TerminalLifecycleHook::run(LIFECYCLE_BOOT,$name,$argv,$namespace);
+        return (new Sandbox(static::$container, $name, $argv,$bootOptions))->run($namespace);
     }
 
     public static function audit()

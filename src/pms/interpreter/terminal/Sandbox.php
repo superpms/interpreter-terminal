@@ -24,20 +24,16 @@ class Sandbox extends Container
 
     }
 
-    public function run()
+    public function run(string $namespace)
     {
-        $namespace = $this->commandList[$this->name];
-        if (!class_exists($namespace)) {
-            exit(CommandOutput::setColorStr(TERMINAL_COLOR_RED,"Command with class not found: " . $this->name));
-        }
+
         $class = $this->getClass($namespace);
         $validate = $class->getProperty('validate')->getDefaultValue();
         $this->put(TerminalInputInject::class, (new CommandInput($validate)));
         $this->put(TerminalOutputInject::class, CommandOutput::class);
-        TerminalLifecycleHook::run(LIFECYCLE_BOOT,
+        TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_BOOTED,
             $this->name,
             $this->argv,
-            $class,
             $this->bootOptions,
             $this->commandList
         );
@@ -49,6 +45,14 @@ class Sandbox extends Container
             $this->argv,
             $this->bootOptions
         ]);
+        TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_RAN,
+            $this->name,
+            $this->argv,
+            $obj,
+            $class,
+            $this->bootOptions,
+            $this->commandList
+        );
         try{
             $obj->entry();
         }catch (\Throwable $e){
@@ -58,5 +62,10 @@ class Sandbox extends Container
                 exit(CommandOutput::setColorStr(TERMINAL_COLOR_RED, "dd(...) Forced Interrupt!"));
             }
         }
+    }
+
+    public function __destruct()
+    {
+        TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_DESTRUCT);
     }
 }
