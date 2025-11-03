@@ -5,7 +5,7 @@ namespace pms\app\basic;
 use pms\app\TerminalCommandApp;
 use pms\module\TerminalProcessModule;
 
-abstract class TerminalCommandProcessBasic extends TerminalCommandApp
+abstract class TerminalCommandProcessAppBasic extends TerminalCommandApp
 {
     /**
      * @var int 保持活动间隔
