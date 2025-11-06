@@ -2,8 +2,8 @@
 
 namespace pms\module;
 
-use pms\CfgOptions;
 use pms\contract\TerminalProcessDriverModuleInterface;
+use pms\OptionsAccessCfg;
 
 /**
  * @property int $space 内存空间;
@@ -16,7 +16,7 @@ use pms\contract\TerminalProcessDriverModuleInterface;
  * @property int $active_time;
  * @method $this setKeepAliveInterval(int $keepAliveInterval)
  */
-abstract class TerminalProcessModule extends CfgOptions
+abstract class TerminalProcessModule extends OptionsAccessCfg
 {
 
     /**
@@ -26,6 +26,7 @@ abstract class TerminalProcessModule extends CfgOptions
 
     public function __construct(string $serviceName, int $pid = null)
     {
+        parent::__construct(false);
         $this->space = $this->processDriver::space;
         $this->service_name = $serviceName;
         $this->service_address = $this->processDriver::createServiceAddress($serviceName);

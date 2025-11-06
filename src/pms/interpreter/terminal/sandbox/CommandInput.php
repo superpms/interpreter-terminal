@@ -3,9 +3,8 @@
 namespace pms\interpreter\terminal\sandbox;
 
 use pms\inject\TerminalInputInject;
-use pms\ArrayObjectAccess;
 
-class CommandInput extends ArrayObjectAccess implements TerminalInputInject
+class CommandInput implements TerminalInputInject
 {
 
     protected array $argv = [];
@@ -29,7 +28,7 @@ class CommandInput extends ArrayObjectAccess implements TerminalInputInject
         $this->argv = $argv;
         $this->initValidate();
         $this->initArgumentAndOption();
-        $this->data = array_merge($this->arguments,$this->options);
+        $this->params = array_merge($this->arguments,$this->options);
     }
 
     protected function initValidate(): void{
@@ -83,7 +82,7 @@ class CommandInput extends ArrayObjectAccess implements TerminalInputInject
         if(empty($name)){
             return $this->arguments;
         }
-        return $this->data[$name] ?? null;
+        return $this->arguments[$name] ?? null;
     }
 
     public function getOption(string $name = null)
@@ -91,7 +90,12 @@ class CommandInput extends ArrayObjectAccess implements TerminalInputInject
         if(empty($name)){
             return $this->options;
         }
-        return $this->data['--'.$name] ?? null;
+        return $this->options['--'.$name] ?? null;
+    }
+
+    public function getParams(): array
+    {
+        return $this->params;
     }
 
 
