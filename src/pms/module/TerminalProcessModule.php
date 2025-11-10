@@ -14,7 +14,6 @@ use pms\OptionsAccessCfg;
  * @property int $address 进程内存地址;
  * @property int $start_time;
  * @property int $active_time;
- * @method $this setKeepAliveInterval(int $keepAliveInterval)
  */
 abstract class TerminalProcessModule extends OptionsAccessCfg
 {
@@ -38,6 +37,12 @@ abstract class TerminalProcessModule extends OptionsAccessCfg
         } else {
             $this->pid = getmypid();
         }
+    }
+
+    public function setKeepAliveInterval(int $keepAliveInterval): static
+    {
+        $this->keep_alive_interval = $keepAliveInterval;
+        return $this;
     }
 
     public function start(): static
