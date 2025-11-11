@@ -4,7 +4,6 @@ namespace pms\interpreter\terminal;
 
 use pms\app\TerminalCommandApp;
 use pms\Container;
-use pms\exception\CliModeForcedInterruptException;
 use pms\hook\TerminalLifecycleHook;
 use pms\inject\TerminalInputInject;
 use pms\inject\TerminalOutputInject;
@@ -24,8 +23,8 @@ class Sandbox extends Container
 
     }
 
-    public function run(string $namespace)
-    {
+    public function run(string $namespace): void
+	{
         TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_CREATED,
             $this->name,
             $this->argv,
@@ -34,7 +33,6 @@ class Sandbox extends Container
         );
 
         $class = $this->getClass($namespace);
-
 
         $validate = $class->getProperty('validate')->getDefaultValue();
         $this->put(TerminalInputInject::class, (new CommandInput($validate)));

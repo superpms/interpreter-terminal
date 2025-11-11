@@ -2,11 +2,11 @@
 
 namespace pms\hook;
 
-use pms\contract\HookInterface;
+use pms\contract\HookAppInterface;
 use pms\interpreter\terminal\Sandbox;
 use pms\interpreter\terminal\sandbox\CommandOutput;
 
-class TerminalCommandHook implements HookInterface
+class TerminalCommandHook implements HookAppInterface
 {
 
     protected static string $name = 'Terminal Interpreter';
