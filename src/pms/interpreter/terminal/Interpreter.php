@@ -11,9 +11,9 @@ class Interpreter extends InterpreterApp
     protected static string $name = 'Terminal Interpreter';
 
 
-    public static function entry(\pms\program\boot\Options $bootOptions): mixed{
+    public static function entry(): mixed{
         try{
-            return TerminalCommandHook::run($bootOptions);
+            return TerminalCommandHook::run();
         }catch (\Throwable $throwable){
             if(!($throwable instanceof CliModeForcedInterruptException)){
                 throw $throwable;

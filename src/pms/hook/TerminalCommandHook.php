@@ -27,7 +27,7 @@ class TerminalCommandHook implements HookAppInterface
         return isset(static::$container[$commandName]);
     }
 
-    public static function run(\pms\program\boot\Options $bootOptions): mixed
+    public static function run(): mixed
     {
         TerminalLifecycleHook::run(LIFECYCLE_BOOT);
         $argv = $_SERVER['argv'];
@@ -49,7 +49,7 @@ class TerminalCommandHook implements HookAppInterface
             exit(CommandOutput::setColorStr(TERMINAL_COLOR_RED,"Command with class not found: " . $name));
         }
         TerminalLifecycleHook::run(LIFECYCLE_BOOTED,$name,$argv,$namespace);
-        return (new Sandbox(static::$container, $name, $argv,$bootOptions))->run($namespace);
+        return (new Sandbox(static::$container, $name, $argv))->run($namespace);
     }
 
     public static function audit()

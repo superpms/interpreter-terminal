@@ -6,7 +6,6 @@ use pms\annotate\Inject;
 use pms\contract\AppInterface;
 use pms\inject\TerminalInputInject;
 use pms\inject\TerminalOutputInject;
-use pms\program\boot\Options;
 
 abstract class TerminalCommandApp implements AppInterface
 {
@@ -37,8 +36,7 @@ abstract class TerminalCommandApp implements AppInterface
         return array_key_exists($commandName,$this->commandList);
     }
 
-    final public function __construct(protected array $commandList,protected array $argv,protected Options $bootOptions){}
-
+    final public function __construct(protected array $commandList,protected array $argv){}
 
     #[Inject(TerminalInputInject::class)]
     protected TerminalInputInject $input;

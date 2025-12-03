@@ -9,7 +9,6 @@ use pms\inject\TerminalInputInject;
 use pms\inject\TerminalOutputInject;
 use pms\interpreter\terminal\sandbox\CommandInput;
 use pms\interpreter\terminal\sandbox\CommandOutput;
-use pms\program\boot\Options;
 
 class Sandbox extends Container
 {
@@ -18,7 +17,6 @@ class Sandbox extends Container
         protected array $commandList,
         protected string $name ,
         protected array $argv,
-        protected Options $bootOptions,
     ){
 
     }
@@ -28,7 +26,6 @@ class Sandbox extends Container
         TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_CREATED,
             $this->name,
             $this->argv,
-            $this->bootOptions,
             $this->commandList
         );
 
@@ -40,7 +37,6 @@ class Sandbox extends Container
         TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_BOOT,
             $this->name,
             $this->argv,
-            $this->bootOptions,
             $this->commandList,
             $class
         );
@@ -52,12 +48,10 @@ class Sandbox extends Container
         $obj = $this->invokeClass($class, [
             $this->commandList,
             $this->argv,
-            $this->bootOptions
         ]);
         TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_BOOTED,
             $this->name,
             $this->argv,
-            $this->bootOptions,
             $this->commandList,
             $class,
             $obj
@@ -66,7 +60,6 @@ class Sandbox extends Container
         TerminalLifecycleHook::run(LIFECYCLE_SANDBOX_RAN,
             $this->name,
             $this->argv,
-            $this->bootOptions,
             $this->commandList,
             $class,
             $obj
