@@ -77,7 +77,7 @@ class CommandInput implements TerminalInputInject
         }
     }
 
-    public function getArgument(string $name = null)
+    public function getArgument(?string $name = null)
     {
         if(empty($name)){
             return $this->arguments;
@@ -85,7 +85,7 @@ class CommandInput implements TerminalInputInject
         return $this->arguments[$name] ?? null;
     }
 
-    public function getOption(string $name = null)
+    public function getOption(?string $name = null)
     {
         if(empty($name)){
             return $this->options;
