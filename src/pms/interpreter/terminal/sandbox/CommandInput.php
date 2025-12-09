@@ -34,7 +34,7 @@ class CommandInput implements TerminalInputInject
     protected function initValidate(): void{
         foreach ($this->validate as $key=> $value) {
             if (isset($value['type'])) {
-                if( strtoupper($value['type']) === strtoupper(COMMAND_ARGUMENT_TYPE)){
+                if(strtoupper($value['type']) === strtoupper(COMMAND_ARGUMENT_TYPE)){
                     $this->arguments[$key] = $value['default'] ?? null;
                     $this->argumentsMap[] = $key;
                 }else if(strtoupper($value['type']) === strtoupper(COMMAND_OPTION_TYPE)){

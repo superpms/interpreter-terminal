@@ -12,8 +12,8 @@ interface TerminalOutputInject
     public static function printJsonStr(array $data,array ...$args): void;
     public static function writeJsonStrLn(array $data,array ...$args): void;
     public static function printJsonStrLn(array $data,array ...$args): void;
-    public static function writeJsonArray(array $data,array ...$args): void;
-    public static function printJsonArray(array $data,array ...$args): void;
+    public static function writeArray(array $data,array ...$args): void;
+    public static function printArray(array $data,array ...$args): void;
     public static function end(string $str = ""):void;
     public static function setColorStr($colorCode,string $str): string;
     public static function setBoldStr(string $str): string;

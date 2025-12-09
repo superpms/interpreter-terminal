@@ -7,7 +7,6 @@ use pms\inject\TerminalOutputInject;
 class CommandOutput implements TerminalOutputInject
 {
 
-
     public static function write(string $str, string ...$args): void
     {
         echo $str;
