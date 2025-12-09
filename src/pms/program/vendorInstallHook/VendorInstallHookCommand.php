@@ -20,9 +20,15 @@ class VendorInstallHookCommand extends TerminalCommandApp
                 foreach ($packages as $package) {
                     if (array_key_exists('extra', $package) && array_key_exists('pms', $package['extra'])) {
                         $pmsExtra = $package['extra']['pms'];
-                        if (array_key_exists('config', $pmsExtra)) {
+                        if(array_key_exists('dir', $pmsExtra)){
+                            $dir = $pmsExtra['dir'];
+                            $this->createDir($dir, $package);
+                        }else if (array_key_exists('config', $pmsExtra)) {
                             $config = $pmsExtra['config'];
                             $this->installConfig($config, $package);
+                        }else if(array_key_exists('copy', $pmsExtra)){
+                            $copy = $pmsExtra['copy'];
+                            $this->copyFile($copy, $package);
                         }
                     }
                 }
@@ -37,7 +43,30 @@ class VendorInstallHookCommand extends TerminalCommandApp
             if (!file_exists($path)) {
                 $sourcePath = path_join($vendorRootPath, $value);
                 copy($sourcePath, $path);
+            }
+        }
+    }
 
+    private function copyFile(array $config, array $package): void
+    {
+        $vendorRootPath = Path::getRoot('vendor/composer/', $package['install-path']);
+        foreach ($config as $key => $value) {
+            $path = Path::getRoot($key);
+            if (!file_exists($path)) {
+                $sourcePath = path_join($vendorRootPath, $value);
+                copy($sourcePath, $path);
+            }
+        }
+    }
+
+    private function createDir(array|string $dir, array $package): void{
+        if(!is_array($dir)){
+            $dir = [$dir];
+        }
+        foreach ($dir as $value) {
+            $path = Path::getRoot($value);
+            if(!is_dir($path)){
+                mkdir($path, 0777, true);
             }
         }
     }
