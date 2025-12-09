@@ -62,7 +62,7 @@ class CommandOutput implements TerminalOutputInject
         static::writeJsonStrLn($data, ...$args);
     }
 
-    public static function writeJsonArray(array $data, array ...$args): void
+    public static function writeArray(array $data, array ...$args): void
     {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
@@ -72,13 +72,13 @@ class CommandOutput implements TerminalOutputInject
             }
         }
         foreach ($args as $arg) {
-            static::writeJsonArray($arg);
+            static::writeArray($arg);
         }
     }
 
-    public static function printJsonArray(array $data, array ...$args): void
+    public static function printArray(array $data, array ...$args): void
     {
-        static::writeJsonArray($data, ...$args);
+        static::writeArray($data, ...$args);
     }
 
     public static function end(string $str = ""): void
