@@ -2,9 +2,11 @@
 
 namespace pms\hook;
 
+use pms\app\TerminalCommandApp;
 use pms\contract\HookAppInterface;
 use pms\interpreter\terminal\Sandbox;
 use pms\interpreter\terminal\sandbox\CommandOutput;
+use ReflectionClass;
 
 class TerminalCommandHook implements HookAppInterface
 {
@@ -13,11 +15,23 @@ class TerminalCommandHook implements HookAppInterface
 
     protected static array $container = [];
 
-    public static function mount(string $commandName, string $commandClass): bool
+    public static function mount(string $commandClass): bool
     {
-        if (!static::has($commandName)) {
-            static::$container[$commandName] = $commandClass;
-            return true;
+        if(class_exists($commandClass)){
+            $class = new ReflectionClass($commandClass);
+            if(!$class->isSubclassOf(TerminalCommandApp::class)){
+                return false;
+            }
+            if($class->hasProperty('name')){
+                $nameProperty = $class->getProperty('name');
+                if($nameProperty->hasDefaultValue()){
+                    $commandName = $nameProperty->getDefaultValue();
+                    if (!static::has($commandName)) {
+                        static::$container[$commandName] = $commandClass;
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }
