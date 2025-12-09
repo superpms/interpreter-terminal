@@ -19,10 +19,17 @@
         }
     ],
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "superpms/basic": "^1.0.0"
     },
     "config": {
         "sort-packages": true
+    },
+    "extra": {
+        "pms": {
+            "config":{
+                "command": "resource/config.php"
+            }
+        }
     }
 }
