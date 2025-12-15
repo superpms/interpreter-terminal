@@ -28,12 +28,12 @@ abstract class TerminalCommandProcessAppBasic extends TerminalCommandApp
      * @param int|null $pid
      * @return TerminalProcessModule
      */
-    protected function createProcessModule(string $taskUUID, int $pid = null):TerminalProcessModule
+    protected function createProcessModule(string $taskUUID, ?int $pid = null):TerminalProcessModule
     {
         throw new \Exception("未实现createProcessModule方法");
     }
 
-    protected function processStart(int $pid = null): void{
+    protected function processStart(?int $pid = null): void{
         $this->terminalProcess = $this->createProcessModule($this->taskUUID, $pid);
         $this->terminalProcess->start();
         $this->terminalProcess->setKeepAliveInterval($this->keepAliveInterval);
